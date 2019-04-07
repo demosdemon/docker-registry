@@ -1,0 +1,3 @@
+[submodule "cmd/config"]
+	path = cmd/config
+	url = git@github.com:demosdemon/platformsh-config.git
