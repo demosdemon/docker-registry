@@ -8,7 +8,7 @@ GOPATH=$(mktemp -d --tmpdir go.XXXXXX)
 export GOPATH
 export PATH="$GOPATH/bin:$PATH"
 # cleanup, not really necessary on platform but nice when testing locally
-trap 'rm -rf "$GOPATH"' EXIT
+trap 'chmod -R +w "$GOPATH" && rm -rf "$GOPATH"' EXIT
 
 (cd ./cmd/config && go build -o ../../bin/config .)
 
