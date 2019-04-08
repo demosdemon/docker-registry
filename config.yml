@@ -30,4 +30,4 @@ redis:
   db: 0
 {{- with rel "cache.[0].password" }}
   password: {{ . }}
-{{- end -}}
+{{- end }}
