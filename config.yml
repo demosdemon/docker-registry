@@ -15,7 +15,9 @@ storage:
     rootdirectory: {{ env "PLATFORM_DIR" }}/var/lib/registry
 auth:
   token:
-    realm: {{ .TokenURL }}
+{{- with json (slice (route "$[?(@.upstream == 'auth')]") "$[0].url") }}
+    realm: {{ printf "%s://%s%s" .Scheme .Host .Path }}
+{{- end }}
     service: Docker Registry
     issuer: Acme Auth Server
     rootcertbundle: {{ env "PLATFORM_DIR" }}/bundle.crt
@@ -23,11 +25,15 @@ http:
   addr: localhost:{{ env "PORT" }}
   net: tcp
   prefix: /
-  host: {{ .RegistryURL }}
+{{- with json (slice (route "$[?(@.upstream == 'registry')]") "$[0].url") }}
+  host: {{ printf "%s://%s" .Scheme .Host }}
+{{- end }}
   secret: {{ env "PLATFORM_PROJECT_ENTROPY" }}
 redis:
-  addr: {{ rel "cache.[0].host" }}:{{ rel "cache.[0].port" }}
+{{- with json (rel "$.cache[0]") }}
+  addr: {{ printf "%v:%v" .host .port }}
   db: 0
-{{ with rel "cache.[0].password" }}
+{{- with .password }}
   password: {{ . }}
-{{ end }}
+{{- end }}
+{{- end }}
