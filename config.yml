@@ -15,7 +15,7 @@ storage:
     rootdirectory: {{ env "PLATFORM_DIR" }}/var/lib/registry
 auth:
   token:
-    realm: {{ .TokenURL }}auth
+    realm: {{ .TokenURL }}
     service: Docker Registry
     issuer: Acme Auth Server
     rootcertbundle: {{ env "PLATFORM_DIR" }}/bundle.crt
@@ -28,4 +28,6 @@ http:
 redis:
   addr: {{ rel "cache.[0].host" }}:{{ rel "cache.[0].port" }}
   db: 0
-{{ with rel "cache.[0].password" }}  password: {{ . }}{{ end }}
+{{- with rel "cache.[0].password" }}
+  password: {{ . }}
+{{- end -}}
