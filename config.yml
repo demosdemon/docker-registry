@@ -1,8 +1,8 @@
 version: 0.1
 log:
   accesslog:
-    disabled: false
-  level: {{ if eq (env "PLATFORM_BRANCH") "master" }}info{{ else }}debug{{ end }}
+    disabled: true
+  level: debug
   formatter: text
   fields:
     branch: {{ env "PLATFORM_BRANCH" }}
@@ -28,6 +28,6 @@ http:
 redis:
   addr: {{ rel "cache.[0].host" }}:{{ rel "cache.[0].port" }}
   db: 0
-{{- with rel "cache.[0].password" }}
+{{ with rel "cache.[0].password" }}
   password: {{ . }}
-{{- end }}
+{{ end }}
