@@ -35,13 +35,11 @@ web:
       allow: false
       passthru: true
 
-# The size of the persistent disk of the application (in MB).
-disk: 4992
-
 # Set a local R/W mount for media
 mounts:
   /var/lib/registry:
-    source: local
+    source: service
+    service: files
     source_path: registry
   /var/log:
     source: local
@@ -52,3 +50,13 @@ hooks:
   # The build hook runs before the application is deployed, and is useful for
   # assembling the codebase.
   build: ./build.sh
+  # TODO: remove this after migrating all environments
+  deploy: | # migrate the old local mount to network storage
+    set -ex
+    if [ -d /mnt/registry ]; then
+      rsync -avPHhS --safe-links --stats /mnt/registry/ ./var/lib/registry/
+      rm -rf /mnt/registry
+    fi
+
+# The size of the persistent disk of the application (in MB).
+disk: 4992  # TODO: change to 128 after successfully migrating existing data
