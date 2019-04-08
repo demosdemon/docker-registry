@@ -59,4 +59,4 @@ hooks:
     fi
 
 # The size of the persistent disk of the application (in MB).
-disk: 4992  # TODO: change to 128 after successfully migrating existing data
+disk: 128
