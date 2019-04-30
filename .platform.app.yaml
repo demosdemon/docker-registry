@@ -7,7 +7,7 @@
 name: registry
 
 # The runtime the application uses.
-type: golang:1.11
+type: golang:1.12
 
 # The relationships of the application with services or other applications.
 #
